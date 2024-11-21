@@ -8,6 +8,6 @@ import { ConceptsAutomaticModule } from 'src/concepts-automatic/concepts-automat
   imports: [ConceptsManualModule, ConceptsAutomaticModule],
   controllers: [AppController],
   providers: [AppService],
-  exports: [], 
+  exports: [],
 })
 export class AppModule {}

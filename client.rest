@@ -10,3 +10,12 @@ GET {{baseUrl}}/first/second/
 # @name ExampleRoute
 GET {{baseUrl}}/first/example/
 
+### ConceptsManualController Home
+
+# @name ConceptsManualControllerHome
+GET {{baseUrl}}/concepts-manual/
+
+### ConceptsAutomaticController Home
+
+# @name ConceptsAutomaticControllerHome
+GET {{baseUrl}}/concepts-automatic/
