@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
-//import { AppService } from './app.service';
+import { AppService } from './app.service';
 
 @Controller('first')
 export class AppController {
-  //constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) {}
 
   @Get('second') // Now this route responds -> http://localhost:3000/first/second
   getHello(): string {
@@ -12,6 +12,6 @@ export class AppController {
 
   @Get('example')
   example() {
-    return '<h1>Example route</h1>';
+    return this.appService.methodExample();
   }
 }

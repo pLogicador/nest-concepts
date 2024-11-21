@@ -1,10 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
+import { ConceptsManualService } from './concepts-manual.service';
 
 @Controller('concepts-manual')
 export class ConceptsManualController {
-  // methods to respond to the request
+  constructor(private readonly conceptsManualService: ConceptsManualService) {}
+
   @Get()
   home(): string {
-    return '<h1>Welcome to Home (concepts-manual)</h1>';
+    return this.conceptsManualService.methodExample();
   }
 }
