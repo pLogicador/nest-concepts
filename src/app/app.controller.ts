@@ -1,12 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+//import { AppService } from './app.service';
 
-@Controller()
+@Controller('first')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  //constructor(private readonly appService: AppService) {}
 
-  @Get()
+  @Get('second') // Now this route responds -> http://localhost:3000/first/second
   getHello(): string {
-    return this.appService.getHello();
+    return "<p>@Get is a request method. Just for reference, it is part of the 'R' of CRUD</p>";
   }
 }
