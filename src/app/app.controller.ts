@@ -9,4 +9,9 @@ export class AppController {
   getHello(): string {
     return "<p>@Get is a request method. Just for reference, it is part of the 'R' of CRUD</p>";
   }
+
+  @Get('example')
+  example() {
+    return '<h1>Example route</h1>';
+  }
 }
