@@ -1,4 +1,11 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+
+// CRUD
+// Create -> POST       -> Create a message
+// Read   -> GET        -> Read all messages
+// Read   -> GET        -> Read just one message
+// Update -> PATCH/PUT  -> Update a message
+// Delete -> DELETE     -> Delete a message
 
 @Controller('messages')
 export class MessagesController {
@@ -16,5 +23,13 @@ export class MessagesController {
   @Post()
   create(@Body() body: any) {
     return body;
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() body: any) {
+    return {
+      id,
+      ...body,
+    }
   }
 }
