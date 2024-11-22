@@ -3,19 +3,10 @@
 ### AppControllerGetHello
 
 # @name AppControllerGetHello
-GET {{baseUrl}}/first/second/
+GET {{baseUrl}}/home/second/
 
 ### ExampleRoute
 
 # @name ExampleRoute
-GET {{baseUrl}}/first/example/
+GET {{baseUrl}}/home/example/
 
-### ConceptsManualController Home
-
-# @name ConceptsManualControllerHome
-GET {{baseUrl}}/concepts-manual/
-
-### ConceptsAutomaticController Home
-
-# @name ConceptsAutomaticControllerHome
-GET {{baseUrl}}/concepts-automatic/
