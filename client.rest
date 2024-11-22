@@ -5,6 +5,14 @@
 GET {{baseUrl}}/messages/
 ###
 GET {{baseUrl}}/messages/1/
+###
+POST {{baseUrl}}/messages/
+Content-Type: application/json
+
+{
+    "message": "This is the message im sending.",
+    "new-key": "other value"
+}
 
 ### AppControllerGetHello
 
