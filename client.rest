@@ -21,6 +21,8 @@ Content-Type: application/json
     "message": "This is the message im sending...",
     "update": true
 }
+### Delete a message
+DELETE {{baseUrl}}/messages/1/
 
 ### AppControllerGetHello
 

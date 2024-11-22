@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
 
 // CRUD
 // Create -> POST       -> Create a message
@@ -31,5 +31,10 @@ export class MessagesController {
       id,
       ...body,
     }
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return `this route DELETE the message ID ${id}`;
   }
 }
