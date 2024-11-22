@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
 
 @Controller('messages')
 export class MessagesController {
+  @HttpCode(HttpStatus.OK)
   @Get()
   findAll() {
     return 'this route returns all messages';
