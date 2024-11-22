@@ -1,4 +1,15 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 
 // CRUD
 // Create -> POST       -> Create a message
@@ -12,7 +23,7 @@ export class MessagesController {
   @HttpCode(HttpStatus.OK)
   @Get()
   findAll(@Query() pagination: any) {
-    const { limit = 10, offset = 0 } = pagination 
+    const { limit = 10, offset = 0 } = pagination;
     return `returns all messages. Limit=${limit}, Offset=${offset}`;
   }
 
@@ -31,7 +42,7 @@ export class MessagesController {
     return {
       id,
       ...body,
-    }
+    };
   }
 
   @Delete(':id')
