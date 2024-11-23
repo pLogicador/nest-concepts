@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { MessageEntity } from './entities/message.entity';
 
 @Injectable()
@@ -15,12 +15,19 @@ export class MessagesService {
     },
   ];
 
+  throwNotFoundError() {
+    throw new NotFoundException('Message not found');
+  }
+
   findAll() {
     return this.messages;
   }
 
   findOne(id: string) {
-    return this.messages.find(item => item.id === +id);
+    const message = this.messages.find(item => item.id === +id);
+
+    if (message) return message;
+    this.throwNotFoundError();
   }
 
   create(body: any) {
@@ -40,14 +47,16 @@ export class MessagesService {
       item => item.id === +id,
     );
 
-    if (messageExistingIndex >= 0) {
-      const messageExisting = this.messages[messageExistingIndex];
-
-      this.messages[messageExistingIndex] = {
-        ...messageExisting,
-        ...body,
-      };
+    if (messageExistingIndex < 0) {
+      this.throwNotFoundError();
     }
+
+    const messageExisting = this.messages[messageExistingIndex];
+
+    this.messages[messageExistingIndex] = {
+      ...messageExisting,
+      ...body,
+    };
 
     return this.messages[messageExistingIndex];
   }
@@ -57,8 +66,14 @@ export class MessagesService {
       item => item.id === +id,
     );
 
-    if (messageExistingIndex >= 0) {
-      this.messages.splice(messageExistingIndex, 1);
+    if (messageExistingIndex < 0) {
+      this.throwNotFoundError();
     }
+
+    const message = this.messages[messageExistingIndex];
+
+    this.messages.splice(messageExistingIndex, 1);
+
+    return message;
   }
 }
