@@ -4,25 +4,31 @@
 ### Show all messages
 GET {{baseUrl}}/messages/?limit=100&offset=100
 ### Show only one message
-GET {{baseUrl}}/messages/1/
+GET {{baseUrl}}/messages/2/
 ### Create a message
 POST {{baseUrl}}/messages/
 Content-Type: application/json
 
 {
-    "message": "This is the message im sending.",
-    "new-key": "other value"
+    "text": "3 New Message",
+    "from": "Ran",
+    "to": "Gabriel",
+    "read": false,
+    "date": "2024-11-22T23:46:11.573Z"
 }
 ### Update a message
-PATCH {{baseUrl}}/messages/1/
+PATCH {{baseUrl}}/messages/2/
 Content-Type: application/json
 
 {
-    "message": "This is the message im sending...",
-    "update": true
+    "text": "Updated Message",
+    "from": "JANE",
+    "to": "ROBERT",
+    "read": false,
+    "date": "2024-11-22T23:46:11.573Z"
 }
 ### Delete a message
-DELETE {{baseUrl}}/messages/1/
+DELETE {{baseUrl}}/messages/2/
 
 ### AppControllerGetHello
 
