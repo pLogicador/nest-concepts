@@ -11,6 +11,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
+import { CreateMessageDto } from './dto/create-message.dto';
+import { UpdateMessageDto } from './dto/update-message.dto';
 
 // CRUD
 // Create -> POST       -> Create a message
@@ -18,6 +20,8 @@ import { MessagesService } from './messages.service';
 // Read   -> GET        -> Read just one message
 // Update -> PATCH/PUT  -> Update a message
 // Delete -> DELETE     -> Delete a message
+
+// DTO (Data Transfer Object) -> validate data/transform data
 
 @Controller('messages')
 export class MessagesController {
@@ -37,13 +41,13 @@ export class MessagesController {
   }
 
   @Post()
-  create(@Body() body: any) {
-    return this.messagesService.create(body);
+  create(@Body() createMessageDto: CreateMessageDto) {
+    return this.messagesService.create(createMessageDto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body: any) {
-    return this.messagesService.update(id, body);
+  update(@Param('id') id: string, @Body() updateMessageDto: UpdateMessageDto) {
+    return this.messagesService.update(id, updateMessageDto);
   }
 
   @Delete(':id')
