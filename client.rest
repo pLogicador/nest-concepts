@@ -12,9 +12,7 @@ Content-Type: application/json
 {
     "text": "3 New Message",
     "from": "Ran",
-    "to": "Gabriel",
-    "read": false,
-    "date": "2024-11-22T23:46:11.573Z"
+    "to": "Gabriel"
 }
 ### Update a message
 PATCH {{baseUrl}}/messages/2/
@@ -22,10 +20,7 @@ Content-Type: application/json
 
 {
     "text": "Updated Message",
-    "from": "JANE",
-    "to": "ROBERT",
-    "read": false,
-    "date": "2024-11-22T23:46:11.573Z"
+    "read": true
 }
 ### Delete a message
 DELETE {{baseUrl}}/messages/2/
