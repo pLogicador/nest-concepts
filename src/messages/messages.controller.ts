@@ -30,10 +30,11 @@ export class MessagesController {
 
   @HttpCode(HttpStatus.OK)
   @Get()
-  findAll(@Query() pagination: any) {
+  async findAll(@Query() pagination: any) {
     const { limit = 10, offset = 0 } = pagination;
     //return `returns all messages. Limit=${limit}, Offset=${offset}`;
-    return this.messagesService.findAll();
+    const messages = await this.messagesService.findAll();
+    return messages;
   }
 
   @Get(':id')
