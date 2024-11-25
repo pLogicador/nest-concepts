@@ -4,23 +4,23 @@
 ### Show all messages
 GET {{baseUrl}}/messages/?limit=100&offset=100
 ### Show only one message
-GET {{baseUrl}}/messages/3/
+GET {{baseUrl}}/messages/5/
 ### Create a message
 POST {{baseUrl}}/messages/
 Content-Type: application/json
 
 {
     "text": "New Message",
-    "from": "Ran",
-    "to": "Gabriel"
+    "from": "Jennifer",
+    "to": "Roma"
 }
 ### Update a message
-PATCH {{baseUrl}}/messages/2/
+PATCH {{baseUrl}}/messages/5/
 Content-Type: application/json
 
 {
-    "text": "Updated Message",
-    "read": true
+    "text": "Updated Message 5",
+    "read": false
 }
 ### Delete a message
 DELETE {{baseUrl}}/messages/4/

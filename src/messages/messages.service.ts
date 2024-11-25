@@ -12,18 +12,6 @@ export class MessagesService {
     private readonly messageRepository: Repository<MessageEntity>,
   ) {}
 
-  private lastId = 1;
-  private messages: MessageEntity[] = [
-    {
-      id: 1,
-      text: 'This is a test message',
-      from: 'Jane',
-      to: 'Robert',
-      read: false,
-      date: new Date(),
-    },
-  ];
-
   throwNotFoundError() {
     throw new NotFoundException('Message not found');
   }
@@ -55,23 +43,21 @@ export class MessagesService {
     return this.messageRepository.save(message);
   }
 
-  update(id: string, updateMessageDto: UpdateMessageDto) {
-    const messageExistingIndex = this.messages.findIndex(
-      item => item.id === +id,
-    );
-
-    if (messageExistingIndex < 0) {
-      this.throwNotFoundError();
-    }
-
-    const messageExisting = this.messages[messageExistingIndex];
-
-    this.messages[messageExistingIndex] = {
-      ...messageExisting,
-      ...updateMessageDto,
+  async update(id: number, updateMessageDto: UpdateMessageDto) {
+    const partialUpdateMessageDto = {
+      read: updateMessageDto?.read,
+      text: updateMessageDto?.text,
     };
+    const message = await this.messageRepository.preload({
+      id,
+      ...partialUpdateMessageDto,
+    });
 
-    return this.messages[messageExistingIndex];
+    if (!message) return this.throwNotFoundError();
+
+    await this.messageRepository.save(message);
+
+    return message;
   }
 
   async remove(id: number) {
