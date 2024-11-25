@@ -45,18 +45,14 @@ export class MessagesService {
     this.throwNotFoundError();
   }
 
-  create(createMessageDto: CreateMessageDto) {
-    this.lastId++;
-    const id = this.lastId;
+  async create(createMessageDto: CreateMessageDto) {
     const newMessage = {
-      id,
       ...createMessageDto,
       read: false,
       date: new Date(),
     };
-    this.messages.push(newMessage);
-
-    return newMessage;
+    const message = await this.messageRepository.create(newMessage);
+    return this.messageRepository.save(message);
   }
 
   update(id: string, updateMessageDto: UpdateMessageDto) {
@@ -78,19 +74,13 @@ export class MessagesService {
     return this.messages[messageExistingIndex];
   }
 
-  remove(id: number) {
-    const messageExistingIndex = this.messages.findIndex(
-      item => item.id === id,
-    );
+  async remove(id: number) {
+    const message = await this.messageRepository.findOneBy({
+      id,
+    });
 
-    if (messageExistingIndex < 0) {
-      this.throwNotFoundError();
-    }
+    if (!message) return this.throwNotFoundError();
 
-    const message = this.messages[messageExistingIndex];
-
-    this.messages.splice(messageExistingIndex, 1);
-
-    return message;
+    return this.messageRepository.remove(message);
   }
 }

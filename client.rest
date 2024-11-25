@@ -4,13 +4,13 @@
 ### Show all messages
 GET {{baseUrl}}/messages/?limit=100&offset=100
 ### Show only one message
-GET {{baseUrl}}/messages/1/
+GET {{baseUrl}}/messages/3/
 ### Create a message
 POST {{baseUrl}}/messages/
 Content-Type: application/json
 
 {
-    "text": "3 New Message",
+    "text": "New Message",
     "from": "Ran",
     "to": "Gabriel"
 }
@@ -23,7 +23,7 @@ Content-Type: application/json
     "read": true
 }
 ### Delete a message
-DELETE {{baseUrl}}/messages/2/
+DELETE {{baseUrl}}/messages/4/
 
 ### AppControllerGetHello
 
