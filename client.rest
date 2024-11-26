@@ -4,15 +4,15 @@
 ### Show all messages
 GET {{baseUrl}}/messages/?limit=100&offset=100
 ### Show only one message
-GET {{baseUrl}}/messages/5/
+GET {{baseUrl}}/messages/12/
 ### Create a message
 POST {{baseUrl}}/messages/
 Content-Type: application/json
 
 {
-    "text": "New Message",
-    "from": "Jennifer",
-    "to": "Roma"
+    "text": "From Katarina to Mario",
+    "fromId": 11,
+    "toId": 10
 }
 ### Update a message
 PATCH {{baseUrl}}/messages/5/
@@ -40,9 +40,9 @@ POST {{baseUrl}}/persons/
 Content-Type: application/json
 
 {
-   "email": "test2@email.com",
-   "password": "123456",
-   "name": "pLogicador"
+   "email": "katarina@email.com",
+   "password": "555555",
+   "name": "Katarina"
 }
 ### Update a person
 PATCH {{baseUrl}}/persons/9/

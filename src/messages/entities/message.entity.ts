@@ -33,11 +33,11 @@ export class MessageEntity {
   @ManyToOne(() => Person)
   // Specifies the "from" column that stores the ID of the person who sent the message
   @JoinColumn({ name: 'from' })
-  from: string;
+  from: Person;
 
   //Many messages can be sent to one person (recipient)
   @ManyToOne(() => Person)
   // Specifies the "to" column that stores the ID of the person receiving the message
   @JoinColumn({ name: 'to' })
-  to: string;
+  to: Person;
 }

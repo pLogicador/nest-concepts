@@ -11,7 +11,7 @@ export class MessagesService {
   constructor(
     @InjectRepository(MessageEntity)
     private readonly messageRepository: Repository<MessageEntity>,
-    private readonly personService: PersonsService,
+    private readonly personsService: PersonsService,
   ) {}
 
   throwNotFoundError() {
@@ -19,7 +19,22 @@ export class MessagesService {
   }
 
   async findAll() {
-    const messages = await this.messageRepository.find();
+    const messages = await this.messageRepository.find({
+      relations: ['from', 'to'],
+      order: {
+        id: 'desc',
+      },
+      select: {
+        from: {
+          id: true,
+          name: true,
+        },
+        to: {
+          id: true,
+          name: true,
+        },
+      },
+    });
     return messages;
   }
 
@@ -29,6 +44,20 @@ export class MessagesService {
       where: {
         id,
       },
+      relations: ['from', 'to'],
+      order: {
+        id: 'desc',
+      },
+      select: {
+        from: {
+          id: true,
+          name: true,
+        },
+        to: {
+          id: true,
+          name: true,
+        },
+      },
     });
 
     if (message) return message;
@@ -36,16 +65,32 @@ export class MessagesService {
   }
 
   async create(createMessageDto: CreateMessageDto) {
+    const { fromId, toId } = createMessageDto;
     // Find a person who is creating the message
+    const from = await this.personsService.findOne(fromId);
+
     // Find a person to whom the message is being sent
+    const to = await this.personsService.findOne(toId);
 
     const newMessage = {
-      ...createMessageDto,
+      text: createMessageDto.text,
+      from,
+      to,
       read: false,
       date: new Date(),
     };
     const message = await this.messageRepository.create(newMessage);
-    return this.messageRepository.save(message);
+    await this.messageRepository.save(message);
+
+    return {
+      ...message,
+      from: {
+        id: message.from.id,
+      },
+      to: {
+        id: message.to.id,
+      },
+    };
   }
 
   async update(id: number, updateMessageDto: UpdateMessageDto) {
