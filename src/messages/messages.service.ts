@@ -4,12 +4,14 @@ import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { PersonsService } from 'src/persons/persons.service';
 
 @Injectable()
 export class MessagesService {
   constructor(
     @InjectRepository(MessageEntity)
     private readonly messageRepository: Repository<MessageEntity>,
+    private readonly personService: PersonsService,
   ) {}
 
   throwNotFoundError() {
@@ -34,6 +36,9 @@ export class MessagesService {
   }
 
   async create(createMessageDto: CreateMessageDto) {
+    // Find a person who is creating the message
+    // Find a person to whom the message is being sent
+
     const newMessage = {
       ...createMessageDto,
       read: false,
