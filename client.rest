@@ -25,6 +25,26 @@ Content-Type: application/json
 ### Delete a message
 DELETE {{baseUrl}}/messages/4/
 
+
+
+#
+
+
+# Persons
+### Show all persons
+GET {{baseUrl}}/persons/?limit=100&offset=100
+### Show only one person
+GET {{baseUrl}}/persons/5/
+### Create a person
+POST {{baseUrl}}/persons/
+Content-Type: application/json
+
+{
+   "email": "test2@email.com",
+   "password": "123456",
+   "name": "pLogicador"
+}
+
 ### AppControllerGetHello
 
 # @name AppControllerGetHello
