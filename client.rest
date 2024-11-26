@@ -34,7 +34,7 @@ DELETE {{baseUrl}}/messages/4/
 ### Show all persons
 GET {{baseUrl}}/persons/?limit=100&offset=100
 ### Show only one person
-GET {{baseUrl}}/persons/5/
+GET {{baseUrl}}/persons/9/
 ### Create a person
 POST {{baseUrl}}/persons/
 Content-Type: application/json
@@ -44,6 +44,22 @@ Content-Type: application/json
    "password": "123456",
    "name": "pLogicador"
 }
+### Update a person
+PATCH {{baseUrl}}/persons/9/
+Content-Type: application/json
+
+{
+    "password": "555555",
+    "name": "Lana"
+}
+### Delete a person
+DELETE {{baseUrl}}/persons/7/
+
+
+
+#
+
+
 
 ### AppControllerGetHello
 
