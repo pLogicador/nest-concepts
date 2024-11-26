@@ -10,9 +10,9 @@ POST {{baseUrl}}/messages/
 Content-Type: application/json
 
 {
-    "text": "From Katarina to Mario",
-    "fromId": 11,
-    "toId": 10
+    "text": "From Eduardo to Katarina",
+    "fromId": 12,
+    "toId": 11
 }
 ### Update a message
 PATCH {{baseUrl}}/messages/5/
@@ -40,9 +40,9 @@ POST {{baseUrl}}/persons/
 Content-Type: application/json
 
 {
-   "email": "katarina@email.com",
-   "password": "555555",
-   "name": "Katarina"
+   "email": "Edu@email.com",
+   "password": "88888",
+   "name": "Eduardo"
 }
 ### Update a person
 PATCH {{baseUrl}}/persons/9/
@@ -53,7 +53,7 @@ Content-Type: application/json
     "name": "Lana"
 }
 ### Delete a person
-DELETE {{baseUrl}}/persons/7/
+DELETE {{baseUrl}}/persons/10/
 
 
 
