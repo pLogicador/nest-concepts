@@ -2,7 +2,9 @@
 
 # Messages
 ### Show all messages
-GET {{baseUrl}}/messages/?limit=100&offset=100
+GET {{baseUrl}}/messages/
+?limit=10
+&offset=0
 ### Show only one message
 GET {{baseUrl}}/messages/12/
 ### Create a message
