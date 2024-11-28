@@ -18,6 +18,7 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { AddHeaderInterceptor } from 'src/common/interceptors/add-header.interceptor';
 import { TimingConnectionInterceptor } from 'src/common/interceptors/timing-connection.interceptor';
 import { ErrorHandlingInterceptor } from 'src/common/interceptors/error-handling.interceptor';
+import { SimpleCacheInterceptor } from 'src/common/interceptors/simple-cache.interceptor';
 
 // CRUD
 // Create -> POST       -> Create a message
@@ -28,6 +29,7 @@ import { ErrorHandlingInterceptor } from 'src/common/interceptors/error-handling
 
 // DTO (Data Transfer Object) -> validate data/transform data
 
+@UseInterceptors(SimpleCacheInterceptor)
 @Controller('messages')
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
