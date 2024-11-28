@@ -12,6 +12,8 @@ import { ConfigModule } from '@nestjs/config';
 import { PersonsModule } from 'src/persons/persons.module';
 import { SimpleMiddleware } from 'src/common/middlewares/simple.middleware';
 import { OtherMiddleware } from 'src/common/middlewares/other.middleware';
+import { APP_FILTER } from '@nestjs/core';
+import { ErrorExceptionFiler } from 'src/common/filters/error-exception.filter';
 
 @Module({
   imports: [
@@ -30,7 +32,13 @@ import { OtherMiddleware } from 'src/common/middlewares/other.middleware';
     PersonsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: ErrorExceptionFiler,
+    },
+  ],
   exports: [],
 })
 export class AppModule implements NestModule {

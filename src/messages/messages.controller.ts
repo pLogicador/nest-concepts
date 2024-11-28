@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -39,7 +40,10 @@ export class MessagesController {
     console.log('MessagesController', req['user']);
     //return `returns all messages. Limit=${limit}, Offset=${offset}`;
     const messages = await this.messagesService.findAll(paginationDto);
-    return messages;
+
+    throw new Error('MESSAGE.');
+
+    //return messages;
   }
 
   @Get(':id')
