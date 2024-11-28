@@ -20,7 +20,6 @@ export class MessagesService {
   }
 
   async findAll(paginationDto?: PaginationDto) {
-    console.log('MessagesService findAll executed.');
     const { limit = 10, offset = 0 } = paginationDto;
 
     const messages = await this.messageRepository.find({
