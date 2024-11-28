@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:3000
 
-# Messages
+# MESSAGES
 ### Show all messages
 GET {{baseUrl}}/messages/
 ?limit=10
@@ -33,7 +33,7 @@ DELETE {{baseUrl}}/messages/4/
 #
 
 
-# Persons
+# PERSONS
 ### Show all persons
 GET {{baseUrl}}/persons/?limit=100&offset=100
 ### Show only one person
