@@ -1,24 +1,21 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
-  HttpCode,
-  HttpStatus,
   Param,
   Patch,
   Post,
   Query,
   Req,
-  UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { AuthTokenInterceptor } from 'src/common/interceptors/auth-token.interceptor';
 import { Request } from 'express';
+import { IsAdminGuard } from 'src/common/guards/is-admin.guard';
 
 // CRUD
 // Create -> POST       -> Create a message
@@ -29,21 +26,18 @@ import { Request } from 'express';
 
 // DTO (Data Transfer Object) -> validate data/transform data
 
-@UseInterceptors(AuthTokenInterceptor)
 @Controller('messages')
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
-  @HttpCode(HttpStatus.OK)
+  @UseGuards(IsAdminGuard)
   @Get()
   async findAll(@Query() paginationDto: PaginationDto, @Req() req: Request) {
     console.log('MessagesController', req['user']);
-    //return `returns all messages. Limit=${limit}, Offset=${offset}`;
+
     const messages = await this.messagesService.findAll(paginationDto);
 
-    throw new Error('MESSAGE.');
-
-    //return messages;
+    return messages;
   }
 
   @Get(':id')

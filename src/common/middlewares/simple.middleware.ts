@@ -10,6 +10,7 @@ export class SimpleMiddleware implements NestMiddleware {
       req['user'] = {
         name: 'Pedro',
         subname: 'Emanuel',
+        role: 'admin',
       };
     }
 
