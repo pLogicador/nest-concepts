@@ -9,13 +9,11 @@ import {
   Patch,
   Post,
   Query,
-  UseInterceptors,
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { ChangeDataInterceptor } from 'src/common/interceptors/change-data.interceptor';
 
 // CRUD
 // Create -> POST       -> Create a message
@@ -26,7 +24,6 @@ import { ChangeDataInterceptor } from 'src/common/interceptors/change-data.inter
 
 // DTO (Data Transfer Object) -> validate data/transform data
 
-@UseInterceptors(ChangeDataInterceptor)
 @Controller('messages')
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
