@@ -5,6 +5,7 @@
 GET {{baseUrl}}/messages/
 ?limit=10
 &offset=0
+Authorization: Bearer HereComesTheToken
 ### Show only one message
 GET {{baseUrl}}/messages/24/
 ### Create a message
