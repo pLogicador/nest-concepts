@@ -7,15 +7,11 @@ import {
   Patch,
   Post,
   Query,
-  Req,
-  UseGuards,
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { Request } from 'express';
-import { IsAdminGuard } from 'src/common/guards/is-admin.guard';
 
 // CRUD
 // Create -> POST       -> Create a message
@@ -30,13 +26,9 @@ import { IsAdminGuard } from 'src/common/guards/is-admin.guard';
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
-  @UseGuards(IsAdminGuard)
   @Get()
-  async findAll(@Query() paginationDto: PaginationDto, @Req() req: Request) {
-    console.log('MessagesController', req['user']);
-
+  async findAll(@Query() paginationDto: PaginationDto) {
     const messages = await this.messagesService.findAll(paginationDto);
-
     return messages;
   }
 

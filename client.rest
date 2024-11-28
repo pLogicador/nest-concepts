@@ -18,15 +18,15 @@ Content-Type: application/json
     "toId": 11
 }
 ### Update a message
-PATCH {{baseUrl}}/messages/15/
+PATCH {{baseUrl}}/messages/28/
 Content-Type: application/json
 
 {
-    "text": "From Eduardo to Katarina",
+    "text": "From Eduardo to Katarina ",
     "read": false
 }
 ### Delete a message
-DELETE {{baseUrl}}/messages/4/
+DELETE {{baseUrl}}/messages/28/
 
 
 
@@ -37,26 +37,26 @@ DELETE {{baseUrl}}/messages/4/
 ### Show all persons
 GET {{baseUrl}}/persons/?limit=100&offset=100
 ### Show only one person
-GET {{baseUrl}}/persons/9/
+GET {{baseUrl}}/persons/12/
 ### Create a person
 POST {{baseUrl}}/persons/
 Content-Type: application/json
 
 {
-   "email": "Edu@email.com",
+   "email": "paulo@email.com",
    "password": "88888",
-   "name": "Eduardo"
+   "name": "Paulo"
 }
 ### Update a person
-PATCH {{baseUrl}}/persons/12/
+PATCH {{baseUrl}}/persons/15/
 Content-Type: application/json
 
 {
-    "password": "555555",
-    "name": "Lana"
+    "password": "aaaaa",
+    "name": "Paul"
 }
 ### Delete a person
-DELETE {{baseUrl}}/persons/10/
+DELETE {{baseUrl}}/persons/15/
 
 
 
