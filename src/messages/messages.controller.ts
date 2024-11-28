@@ -9,11 +9,13 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { AddHeaderInterceptor } from 'src/common/interceptors/add-header.interceptor';
 
 // CRUD
 // Create -> POST       -> Create a message
@@ -25,12 +27,14 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 // DTO (Data Transfer Object) -> validate data/transform data
 
 @Controller('messages')
+@UseInterceptors(AddHeaderInterceptor)
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
   @HttpCode(HttpStatus.OK)
   @Get()
   async findAll(@Query() paginationDto: PaginationDto) {
+    console.log('MessagesController findAll executed.');
     //return `returns all messages. Limit=${limit}, Offset=${offset}`;
     const messages = await this.messagesService.findAll(paginationDto);
     return messages;
