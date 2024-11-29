@@ -13,7 +13,7 @@ POST {{baseUrl}}/messages/
 Content-Type: application/json
 
 {
-    "text": "From Eduardo to Katarina",
+    "text": "From Eduardo to Kate",
     "fromId": 12,
     "toId": 11
 }
@@ -22,7 +22,7 @@ PATCH {{baseUrl}}/messages/28/
 Content-Type: application/json
 
 {
-    "text": "From Eduardo to Katarina ",
+    "text": "From Eduardo to Kate ",
     "read": false
 }
 ### Delete a message
