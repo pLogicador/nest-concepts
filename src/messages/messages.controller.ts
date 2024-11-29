@@ -12,7 +12,6 @@ import { MessagesService } from './messages.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { ReqDataParam } from 'src/common/params/req-data-param.decorator';
 
 // CRUD
 // Create -> POST       -> Create a message
@@ -28,12 +27,7 @@ export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
   @Get()
-  async findAll(
-    @Query() paginationDto: PaginationDto,
-    @ReqDataParam('headers') method,
-  ) {
-    console.log(method);
-
+  async findAll(@Query() paginationDto: PaginationDto) {
     const messages = await this.messagesService.findAll(paginationDto);
     return messages;
   }
