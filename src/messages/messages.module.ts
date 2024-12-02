@@ -22,20 +22,23 @@ import {
     MessagesUtils,
     RegexFactory,
     {
-      provide: REMOVE_SPACES_REGEX, // token
+      provide: REMOVE_SPACES_REGEX,
       useFactory: (regexFactory: RegexFactory) => {
-        // My Code
         return regexFactory.create('RemoveSpacesRegex');
-      }, // Factory
-      inject: [RegexFactory], // Injecting in Factory in Order
+      },
+      inject: [RegexFactory],
     },
     {
-      provide: ONLY_LOWERCASE_LETTERS_REGEX, // token
-      useFactory: (regexFactory: RegexFactory) => {
-        // My Code
+      provide: ONLY_LOWERCASE_LETTERS_REGEX,
+      useFactory: async (regexFactory: RegexFactory) => {
+        // Expect something to happen
+        console.log('I will wait for the promise below to be resolved...');
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        console.log('All ready!');
+
         return regexFactory.create('OnlyLowercaseLettersRegex');
-      }, // Factory
-      inject: [RegexFactory], // Injecting in Factory in Order
+      },
+      inject: [RegexFactory],
     },
   ],
   exports: [MessagesUtils],
