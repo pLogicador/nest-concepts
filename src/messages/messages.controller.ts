@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Inject,
   Param,
   Patch,
   Post,
@@ -14,12 +13,6 @@ import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { MessagesUtils } from './messages.utils';
-import {
-  ONLY_LOWERCASE_LETTERS_REGEX,
-  REMOVE_SPACES_REGEX,
-  SERVER_NAME,
-} from 'src/messages/messages.constant';
-import { RegexProtocol } from 'src/common/regex/regex.protocol';
 
 // CRUD
 // Create -> POST       -> Create a message
@@ -35,19 +28,10 @@ export class MessagesController {
   constructor(
     private readonly messagesService: MessagesService,
     private readonly messagesUtils: MessagesUtils,
-    @Inject(SERVER_NAME)
-    private readonly serverName: string,
-    @Inject(REMOVE_SPACES_REGEX)
-    private readonly removeSpacesRegex: RegexProtocol,
-    @Inject(ONLY_LOWERCASE_LETTERS_REGEX)
-    private readonly onlyLowercaseRegex: RegexProtocol,
   ) {}
 
   @Get()
   async findAll(@Query() paginationDto: PaginationDto) {
-    console.log(this.removeSpacesRegex.execute(this.serverName));
-    console.log(this.onlyLowercaseRegex.execute(this.serverName));
-    console.log(this.serverName);
     const messages = await this.messagesService.findAll(paginationDto);
     return messages;
   }
