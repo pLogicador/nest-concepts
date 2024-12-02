@@ -5,7 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MessageEntity } from './entities/message.entity';
 import { PersonsModule } from 'src/persons/persons.module';
 import { MessagesUtils, MessagesUtilsMock } from './messages.utils';
-import { SERVER_NAME } from 'src/common/constants/server-name.constant';
+import {
+  ONLY_LOWERCASE_LETTERS_REGEX,
+  REMOVE_SPACES_REGEX,
+  SERVER_NAME,
+} from 'src/messages/messages.constant';
+import { RemoveSpacesRegex } from 'src/common/regex/remove-spaces.regex';
+import { OnlyLowercaseLettersRegex } from 'src/common/regex/only-lowercase-letters.regex';
 
 @Module({
   imports: [
@@ -23,6 +29,14 @@ import { SERVER_NAME } from 'src/common/constants/server-name.constant';
     {
       provide: SERVER_NAME,
       useValue: 'Im NESTJS',
+    },
+    {
+      provide: ONLY_LOWERCASE_LETTERS_REGEX,
+      useClass: OnlyLowercaseLettersRegex,
+    },
+    {
+      provide: REMOVE_SPACES_REGEX,
+      useClass: RemoveSpacesRegex,
     },
   ],
   exports: [MessagesUtils, SERVER_NAME],

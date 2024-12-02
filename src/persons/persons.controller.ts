@@ -12,7 +12,7 @@ import { PersonsService } from './persons.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { MessagesUtils } from 'src/messages/messages.utils';
-import { SERVER_NAME } from 'src/common/constants/server-name.constant';
+import { SERVER_NAME } from 'src/messages/messages.constant';
 
 @Controller('persons')
 export class PersonsController {
