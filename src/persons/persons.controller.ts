@@ -10,10 +10,14 @@ import {
 import { PersonsService } from './persons.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
+import { MessagesUtils } from 'src/messages/messages.utils';
 
 @Controller('persons')
 export class PersonsController {
-  constructor(private readonly personsService: PersonsService) {}
+  constructor(
+    private readonly personsService: PersonsService,
+    private readonly messagesUtils: MessagesUtils,
+  ) {}
 
   @Post()
   create(@Body() createPersonDto: CreatePersonDto) {
@@ -22,6 +26,7 @@ export class PersonsController {
 
   @Get()
   findAll() {
+    console.log(this.messagesUtils.reverseString('Pedro'));
     return this.personsService.findAll();
   }
 
