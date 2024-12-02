@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MessageEntity } from './entities/message.entity';
 import { PersonsModule } from 'src/persons/persons.module';
 import { MessagesUtils, MessagesUtilsMock } from './messages.utils';
+import { SERVER_NAME } from 'src/common/constants/server-name.constant';
 
 @Module({
   imports: [
@@ -19,7 +20,11 @@ import { MessagesUtils, MessagesUtilsMock } from './messages.utils';
       useValue: new MessagesUtilsMock(), // Value to useValue
       //useClass: MessagesUtils,
     },
+    {
+      provide: SERVER_NAME,
+      useValue: 'Im NESTJS',
+    },
   ],
-  exports: [MessagesUtils],
+  exports: [MessagesUtils, SERVER_NAME],
 })
 export class MessagesModule {}

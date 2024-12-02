@@ -6,17 +6,21 @@ import {
   Patch,
   Param,
   Delete,
+  Inject,
 } from '@nestjs/common';
 import { PersonsService } from './persons.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { MessagesUtils } from 'src/messages/messages.utils';
+import { SERVER_NAME } from 'src/common/constants/server-name.constant';
 
 @Controller('persons')
 export class PersonsController {
   constructor(
     private readonly personsService: PersonsService,
     private readonly messagesUtils: MessagesUtils,
+    @Inject(SERVER_NAME)
+    private readonly serverName: string,
   ) {}
 
   @Post()
@@ -26,7 +30,7 @@ export class PersonsController {
 
   @Get()
   findAll() {
-    console.log(this.messagesUtils.reverseString('Pedro'));
+    console.log(this.serverName);
     return this.personsService.findAll();
   }
 
