@@ -12,6 +12,7 @@ import { MessagesService } from './messages.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { MessagesUtils } from './messages.utils';
 
 // CRUD
 // Create -> POST       -> Create a message
@@ -24,7 +25,10 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('messages')
 export class MessagesController {
-  constructor(private readonly messagesService: MessagesService) {}
+  constructor(
+    private readonly messagesService: MessagesService,
+    private readonly messagesUtils: MessagesUtils,
+  ) {}
 
   @Get()
   async findAll(@Query() paginationDto: PaginationDto) {
@@ -34,6 +38,7 @@ export class MessagesController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
+    console.log(this.messagesUtils.reverseString('ABCEF'));
     return this.messagesService.findOne(id);
   }
 
