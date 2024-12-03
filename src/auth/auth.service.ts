@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { HashingService } from './hashing/hashing.service';
 import jwtConfig from './config/jwt.config';
 import { ConfigType } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +16,7 @@ export class AuthService {
     private readonly hashingService: HashingService,
     @Inject(jwtConfig.KEY)
     private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async login(LoginDto: LoginDto) {
@@ -35,10 +37,21 @@ export class AuthService {
       throw new UnauthorizedException('Invalid password.');
     }
 
-    // Here we will make the new token and we will deliver to the user in the answer
+    const accessToken = await this.jwtService.signAsync(
+      {
+        sub: person.id,
+        email: person.email,
+      },
+      {
+        audience: this.jwtConfiguration.audience,
+        issuer: this.jwtConfiguration.issuer,
+        secret: this.jwtConfiguration.secret,
+        expiresIn: this.jwtConfiguration.jwtTtl,
+      },
+    );
 
     return {
-      message: 'User logged!!',
+      accessToken,
     };
   }
 }
