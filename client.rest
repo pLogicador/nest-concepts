@@ -62,6 +62,20 @@ DELETE {{baseUrl}}/persons/15/
 #
 
 
+# AUTH
+### Show all persons
+POST {{baseUrl}}/auth/
+Content-Type: application/json
+
+{
+    "email": "lucas@email.com",
+    "password": "123456"
+}
+
+
+#
+
+
 
 ### AppControllerGetHello
 
