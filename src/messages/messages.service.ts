@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, Scope } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
 import { MessageEntity } from './entities/message.entity';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PersonsService } from 'src/persons/persons.service';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import messagesConfig from './messages.config';
+import { ConfigType } from '@nestjs/config';
 
 @Injectable({ scope: Scope.DEFAULT })
 export class MessagesService {
@@ -13,7 +15,11 @@ export class MessagesService {
     @InjectRepository(MessageEntity)
     private readonly messageRepository: Repository<MessageEntity>,
     private readonly personsService: PersonsService,
-  ) {}
+    @Inject(messagesConfig.KEY)
+    private readonly messagesConfiguration: ConfigType<typeof messagesConfig>,
+  ) {
+    console.log(messagesConfiguration);
+  }
 
   throwNotFoundError() {
     throw new NotFoundException('Message not found');

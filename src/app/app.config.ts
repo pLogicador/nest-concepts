@@ -1,4 +1,6 @@
-export default () => ({
+import { registerAs } from '@nestjs/config';
+
+export default registerAs('app', () => ({
   database: {
     type: process.env.DB_TYPE as 'postgres',
     host: process.env.DB_HOST,
@@ -10,4 +12,4 @@ export default () => ({
     synchronize: Boolean(process.env.DB_SYNCHRONIZE),
   },
   environment: process.env.NODE_ENV || 'development',
-});
+}));
