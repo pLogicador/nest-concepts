@@ -10,14 +10,14 @@ import { PersonsModule } from 'src/persons/persons.module';
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      type: 'postgres',
+      type: process.env.DB_TYPE as 'postgres',
       host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT, 10),
+      port: +process.env.DB_PORT,
       database: process.env.DB_NAME,
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
-      autoLoadEntities: true,
-      synchronize: true,
+      autoLoadEntities: Boolean(process.env.DB_AUTOLOADENTITIES),
+      synchronize: Boolean(process.env.DB_SYNCHRONIZE),
     }),
     MessagesModule,
     PersonsModule,
