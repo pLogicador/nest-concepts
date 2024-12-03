@@ -5,30 +5,33 @@ import { MessagesModule } from 'src/messages/messages.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigType } from '@nestjs/config';
 import { PersonsModule } from 'src/persons/persons.module';
-import appConfig from './app.config';
+import globalConfig from 'src/global-config/global.config';
+import { GlobalConfigModule } from 'src/global-config/global-config.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    ConfigModule.forFeature(appConfig),
+    ConfigModule.forFeature(globalConfig),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule.forFeature(appConfig)],
-      inject: [appConfig.KEY],
-      useFactory: async (appConfigurations: ConfigType<typeof appConfig>) => {
+      imports: [ConfigModule.forFeature(globalConfig)],
+      inject: [globalConfig.KEY],
+      useFactory: async (
+        globalConfigurations: ConfigType<typeof globalConfig>,
+      ) => {
         return {
-          type: appConfigurations.database.type,
-          host: appConfigurations.database.host,
-          port: appConfigurations.database.port,
-          database: appConfigurations.database.database,
-          username: appConfigurations.database.username,
-          password: appConfigurations.database.password,
-          autoLoadEntities: appConfigurations.database.autoLoadEntities,
-          synchronize: appConfigurations.database.synchronize,
+          type: globalConfigurations.database.type,
+          host: globalConfigurations.database.host,
+          port: globalConfigurations.database.port,
+          database: globalConfigurations.database.database,
+          username: globalConfigurations.database.username,
+          password: globalConfigurations.database.password,
+          autoLoadEntities: globalConfigurations.database.autoLoadEntities,
+          synchronize: globalConfigurations.database.synchronize,
         };
       },
     }),
     MessagesModule,
     PersonsModule,
+    GlobalConfigModule,
   ],
   controllers: [AppController],
   providers: [AppService],
