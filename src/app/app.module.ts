@@ -8,7 +8,10 @@ import { PersonsModule } from 'src/persons/persons.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      //envFilePath: '.env',
+      //ignoreEnvFile: true,
+    }),
     TypeOrmModule.forRoot({
       type: process.env.DB_TYPE as 'postgres',
       host: process.env.DB_HOST,
