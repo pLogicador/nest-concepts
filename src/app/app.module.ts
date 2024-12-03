@@ -5,12 +5,23 @@ import { MessagesModule } from 'src/messages/messages.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { PersonsModule } from 'src/persons/persons.module';
+import * as Joi from '@hapi/joi';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       //envFilePath: '.env',
       //ignoreEnvFile: true,
+      validationSchema: Joi.object({
+        DB_TYPE: Joi.required(),
+        DB_HOST: Joi.required(),
+        DB_PORT: Joi.number().default(5432),
+        DB_NAME: Joi.required(),
+        DB_USERNAME: Joi.required(),
+        DB_PASSWORD: Joi.required(),
+        DB_AUTOLOADENTITIES: Joi.number().min(0).max(1).default(0),
+        DB_SYNCHRONIZE: Joi.number().min(0).max(1).default(0),
+      }),
     }),
     TypeOrmModule.forRoot({
       type: process.env.DB_TYPE as 'postgres',
