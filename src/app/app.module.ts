@@ -7,6 +7,7 @@ import { ConfigModule, ConfigType } from '@nestjs/config';
 import { PersonsModule } from 'src/persons/persons.module';
 import globalConfig from 'src/global-config/global.config';
 import { GlobalConfigModule } from 'src/global-config/global-config.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { GlobalConfigModule } from 'src/global-config/global-config.module';
     MessagesModule,
     PersonsModule,
     GlobalConfigModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

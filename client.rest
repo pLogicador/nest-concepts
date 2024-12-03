@@ -48,12 +48,11 @@ Content-Type: application/json
    "name": "Paulo"
 }
 ### Update a person
-PATCH {{baseUrl}}/persons/15/
+PATCH {{baseUrl}}/persons/16/
 Content-Type: application/json
 
 {
-    "password": "aaaaa",
-    "name": "Paul"
+    "name": "ana"
 }
 ### Delete a person
 DELETE {{baseUrl}}/persons/15/
