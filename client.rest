@@ -43,9 +43,9 @@ POST {{baseUrl}}/persons/
 Content-Type: application/json
 
 {
-   "email": "paulo@email.com",
-   "password": "88888",
-   "name": "Paulo"
+   "email": "lucas@email.com",
+   "password": "123456",
+   "name": "Lucas"
 }
 ### Update a person
 PATCH {{baseUrl}}/persons/16/
