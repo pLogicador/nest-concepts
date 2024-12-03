@@ -10,10 +10,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Person } from './entities/person.entity';
 import { Repository } from 'typeorm';
 
-// Scope.DEFAULT -> The provider in question is a Singleton (The same instance for everyone)
-// Scope.REQUEST -> The provider in question is instantiated with each request
-// Scope.TRANSIENT -> Provider instance is created for each class that inject this provider
-
 @Injectable({ scope: Scope.DEFAULT })
 export class PersonsService {
   constructor(
