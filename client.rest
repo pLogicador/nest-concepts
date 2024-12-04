@@ -19,7 +19,7 @@ Content-Type: application/json
     "toId": 11
 }
 ### Update a message
-PATCH {{baseUrl}}/messages/30/
+PATCH {{baseUrl}}/messages/31/
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
@@ -28,7 +28,7 @@ Content-Type: application/json
     "read": true
 }
 ### Delete a message
-DELETE {{baseUrl}}/messages/30/
+DELETE {{baseUrl}}/messages/31/
 Authorization: Bearer {{authToken}}
 
 
