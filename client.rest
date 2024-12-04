@@ -42,6 +42,7 @@ GET {{baseUrl}}/persons/
 Authorization: Bearer {{authToken}}
 ### Show only one person
 GET {{baseUrl}}/persons/12/
+Authorization: Bearer {{authToken}}
 ### Create a person
 POST {{baseUrl}}/persons/
 Content-Type: application/json
@@ -53,6 +54,7 @@ Content-Type: application/json
 }
 ### Update a person
 PATCH {{baseUrl}}/persons/16/
+Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
@@ -60,6 +62,7 @@ Content-Type: application/json
 }
 ### Delete a person
 DELETE {{baseUrl}}/persons/15/
+Authorization: Bearer {{authToken}}
 
 
 
