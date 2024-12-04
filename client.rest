@@ -1,5 +1,6 @@
 @baseUrl = http://localhost:3000
 @authToken = {{authenticate.response.body.accessToken}}
+@refreshToken = {{authenticate.response.body.refreshToken}}
 
 # MESSAGES
 ### Show all messages
@@ -81,17 +82,11 @@ Content-Type: application/json
     "password": "123456"
 }
 
+### Re-Authentication
+# @name reAuthenticate
+POST {{baseUrl}}/auth/refresh/
+Content-Type: application/json
 
-#
-
-
-
-### AppControllerGetHello
-
-# @name AppControllerGetHello
-GET {{baseUrl}}/home/second/
-
-### ExampleRoute
-
-# @name ExampleRoute
-GET {{baseUrl}}/home/example/
+{
+    "refreshToken": "{{refreshToken}}"
+}
