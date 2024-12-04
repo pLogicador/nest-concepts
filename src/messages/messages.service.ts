@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, Scope } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+  Scope,
+} from '@nestjs/common';
 import { MessageEntity } from './entities/message.entity';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
@@ -6,6 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PersonsService } from 'src/persons/persons.service';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
 
 @Injectable({ scope: Scope.DEFAULT })
 export class MessagesService {
@@ -25,7 +31,7 @@ export class MessagesService {
     const messages = await this.messageRepository.find({
       take: limit, // how many records to display (per page)
       skip: offset, // how many records to skip
-      //relations: ['from', 'to'],
+      relations: ['from', 'to'],
       order: {
         id: 'desc',
       },
@@ -69,13 +75,16 @@ export class MessagesService {
     this.throwNotFoundError();
   }
 
-  async create(createMessageDto: CreateMessageDto) {
-    const { fromId, toId } = createMessageDto;
-    // Find a person who is creating the message
-    const from = await this.personsService.findOne(fromId);
-
+  async create(
+    createMessageDto: CreateMessageDto,
+    tokenPayload: TokenPayloadDto,
+  ) {
+    const { toId } = createMessageDto;
     // Find a person to whom the message is being sent
     const to = await this.personsService.findOne(toId);
+
+    // Find a person who is creating the message
+    const from = await this.personsService.findOne(tokenPayload.sub);
 
     const newMessage = {
       text: createMessageDto.text,
@@ -91,15 +100,25 @@ export class MessagesService {
       ...message,
       from: {
         id: message.from.id,
+        name: message.from.name,
       },
       to: {
         id: message.to.id,
+        name: message.to.name,
       },
     };
   }
 
-  async update(id: number, updateMessageDto: UpdateMessageDto) {
+  async update(
+    id: number,
+    updateMessageDto: UpdateMessageDto,
+    tokenPayload: TokenPayloadDto,
+  ) {
     const message = await this.findOne(id);
+
+    if (message.from.id !== tokenPayload.sub) {
+      throw new ForbiddenException('This message is not yours');
+    }
 
     message.text = updateMessageDto?.text ?? message.text;
     message.read = updateMessageDto?.read ?? message.read;
@@ -108,12 +127,12 @@ export class MessagesService {
     return message;
   }
 
-  async remove(id: number) {
-    const message = await this.messageRepository.findOneBy({
-      id,
-    });
+  async remove(id: number, tokenPayload: TokenPayloadDto) {
+    const message = await this.findOne(id);
 
-    if (!message) return this.throwNotFoundError();
+    if (message.from.id !== tokenPayload.sub) {
+      throw new ForbiddenException('This message is not yours');
+    }
 
     return this.messageRepository.remove(message);
   }

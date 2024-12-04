@@ -6,28 +6,29 @@
 GET {{baseUrl}}/messages/
 ?limit=10
 &offset=0
-Authorization: Bearer {{authToken}}
 ### Show only one message
 GET {{baseUrl}}/messages/24/
 ### Create a message
 POST {{baseUrl}}/messages/
+Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
     "text": "From Eduardo to Kate",
-    "fromId": 12,
     "toId": 11
 }
 ### Update a message
-PATCH {{baseUrl}}/messages/28/
+PATCH {{baseUrl}}/messages/30/
+Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-    "text": "From Eduardo to Kate ",
-    "read": false
+    "text": "From Eduardo to Kate Update... ",
+    "read": true
 }
 ### Delete a message
-DELETE {{baseUrl}}/messages/28/
+DELETE {{baseUrl}}/messages/30/
+Authorization: Bearer {{authToken}}
 
 
 
