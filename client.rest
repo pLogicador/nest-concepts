@@ -1,11 +1,12 @@
 @baseUrl = http://localhost:3000
+@authToken = {{authenticate.response.body.accessToken}}
 
 # MESSAGES
 ### Show all messages
 GET {{baseUrl}}/messages/
 ?limit=10
 &offset=0
-Authorization: Bearer HereComesTheToken
+Authorization: Bearer {{authToken}}
 ### Show only one message
 GET {{baseUrl}}/messages/24/
 ### Create a message
@@ -38,7 +39,7 @@ DELETE {{baseUrl}}/messages/28/
 GET {{baseUrl}}/persons/
 ?limit=100
 &offset=100
-Authorization: Bearer 123
+Authorization: Bearer {{authToken}}
 ### Show only one person
 GET {{baseUrl}}/persons/12/
 ### Create a person
@@ -66,7 +67,8 @@ DELETE {{baseUrl}}/persons/15/
 
 
 # AUTH
-### Show all persons
+### Authentication
+# @name authenticate
 POST {{baseUrl}}/auth/
 Content-Type: application/json
 
