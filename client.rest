@@ -35,7 +35,10 @@ DELETE {{baseUrl}}/messages/28/
 
 # PERSONS
 ### Show all persons
-GET {{baseUrl}}/persons/?limit=100&offset=100
+GET {{baseUrl}}/persons/
+?limit=100
+&offset=100
+Authorization: Bearer 123
 ### Show only one person
 GET {{baseUrl}}/persons/12/
 ### Create a person
