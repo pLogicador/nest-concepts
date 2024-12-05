@@ -50,9 +50,10 @@ POST {{baseUrl}}/persons/
 Content-Type: application/json
 
 {
-   "email": "romilda@email.com",
+   "email": "thiago3@email.com",
    "password": "123456",
-   "name": "Romilda"
+   "name": "Thiago",
+   "routePolicies": ["createMessage", "findOneMessage"]
 }
 ### Update a person
 PATCH {{baseUrl}}/persons/19/
@@ -63,7 +64,7 @@ Content-Type: application/json
     "name": "LUCAS!!"
 }
 ### Delete a person
-DELETE {{baseUrl}}/persons/19/
+DELETE {{baseUrl}}/persons/22/
 Authorization: Bearer {{authToken}}
 
 
@@ -78,7 +79,7 @@ POST {{baseUrl}}/auth/
 Content-Type: application/json
 
 {
-    "email": "romilda@email.com",
+    "email": "thiago3@email.com",
     "password": "123456"
 }
 
