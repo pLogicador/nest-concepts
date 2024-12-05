@@ -47,6 +47,8 @@ export class AuthTokenGuard implements CanActivate {
         throw new UnauthorizedException('Unauthorized person.');
       }
 
+      payload['person'] = person;
+
       request[REQUEST_TOKEN_PAYLOAD_KEY] = payload;
     } catch (error) {
       throw new UnauthorizedException(error.message);

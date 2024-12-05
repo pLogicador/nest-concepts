@@ -13,12 +13,11 @@ import { MessagesService } from './messages.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { AuthTokenGuard } from 'src/auth/guards/auth-token.guard';
 import { TokenPayloadParam } from 'src/auth/params/token-payload.param';
 import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
-import { RoutePolicyGuard } from 'src/auth/guards/route-policy.guard';
 import { SetRoutePolicy } from 'src/auth/decorators/set-route-policy.decorator';
 import { RoutePolicies } from 'src/auth/enum/route-policies.enum';
+import { AuthAndPolicyGuard } from 'src/auth/guards/auth-and-policy.guard';
 
 // CRUD
 // Create -> POST       -> Create a message
@@ -29,13 +28,11 @@ import { RoutePolicies } from 'src/auth/enum/route-policies.enum';
 
 // DTO (Data Transfer Object) -> validate data/transform data
 
-@UseGuards(RoutePolicyGuard)
 @Controller('messages')
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
   @Get()
-  @SetRoutePolicy(RoutePolicies.findAllMessages)
   async findAll(@Query() paginationDto: PaginationDto) {
     const messages = await this.messagesService.findAll(paginationDto);
     return messages;
@@ -46,7 +43,8 @@ export class MessagesController {
     return this.messagesService.findOne(id);
   }
 
-  @UseGuards(AuthTokenGuard)
+  @SetRoutePolicy(RoutePolicies.createMessage)
+  @UseGuards(AuthAndPolicyGuard)
   @Post()
   create(
     @Body() createMessageDto: CreateMessageDto,
@@ -55,7 +53,8 @@ export class MessagesController {
     return this.messagesService.create(createMessageDto, tokenPayload);
   }
 
-  @UseGuards(AuthTokenGuard)
+  @SetRoutePolicy(RoutePolicies.updateMessage)
+  @UseGuards(AuthAndPolicyGuard)
   @Patch(':id')
   update(
     @Param('id') id: number,
@@ -65,7 +64,8 @@ export class MessagesController {
     return this.messagesService.update(id, updateMessageDto, tokenPayload);
   }
 
-  @UseGuards(AuthTokenGuard)
+  @SetRoutePolicy(RoutePolicies.deleteMessage)
+  @UseGuards(AuthAndPolicyGuard)
   @Delete(':id')
   remove(
     @Param('id') id: number,
