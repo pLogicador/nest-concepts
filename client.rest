@@ -19,7 +19,7 @@ Content-Type: application/json
     "toId": 11
 }
 ### Update a message
-PATCH {{baseUrl}}/messages/43/
+PATCH {{baseUrl}}/messages/44/
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
@@ -28,7 +28,7 @@ Content-Type: application/json
     "read": true
 }
 ### Delete a message
-DELETE {{baseUrl}}/messages/43/
+DELETE {{baseUrl}}/messages/44/
 Authorization: Bearer {{authToken}}
 
 
@@ -52,11 +52,10 @@ Content-Type: application/json
 {
    "email": "thiago3@email.com",
    "password": "123456",
-   "name": "Thiago",
-   "routePolicies": ["createMessage", "findOneMessage"]
+   "name": "Thiago"
 }
 ### Update a person
-PATCH {{baseUrl}}/persons/19/
+PATCH {{baseUrl}}/persons/25/
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
@@ -64,7 +63,7 @@ Content-Type: application/json
     "name": "LUCAS!!"
 }
 ### Delete a person
-DELETE {{baseUrl}}/persons/22/
+DELETE {{baseUrl}}/persons/25/
 Authorization: Bearer {{authToken}}
 
 

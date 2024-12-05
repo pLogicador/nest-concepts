@@ -36,11 +36,11 @@ export class RoutePolicyGuard implements CanActivate {
 
     const { person }: { person: Person } = tokenPayload;
 
-    if (!person.routePolicies.includes(routePolicyRequired)) {
+    /*if (!person.routePolicies.includes(routePolicyRequired)) {
       throw new UnauthorizedException(
         `User has no permission ${routePolicyRequired}`,
       );
-    }
+    }*/
 
     console.log(person);
 
