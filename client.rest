@@ -107,4 +107,9 @@ Content-Disposition: form-data; name="file"; filename="puppy.jpg"
 Content-Type: image/jpg
 
 < ./dev/images/puppy.jpg
+------BoundaryDelimitingHttp
+Content-Disposition: form-data; name="file"; filename="nestjslogo.png"
+Content-Type: image/png
+
+< ./dev/images/nestjslogo.png
 ------BoundaryDelimitingHttp--

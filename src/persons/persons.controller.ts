@@ -9,6 +9,7 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
+  UploadedFiles,
 } from '@nestjs/common';
 import { PersonsService } from './persons.service';
 import { CreatePersonDto } from './dto/create-person.dto';
@@ -16,9 +17,10 @@ import { UpdatePersonDto } from './dto/update-person.dto';
 import { AuthTokenGuard } from 'src/auth/guards/auth-token.guard';
 import { TokenPayloadParam } from 'src/auth/params/token-payload.param';
 import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import * as path from 'path';
 import * as fs from 'fs/promises';
+import { randomUUID } from 'crypto';
 
 @Controller('persons')
 export class PersonsController {
@@ -61,12 +63,28 @@ export class PersonsController {
   }
 
   @UseGuards(AuthTokenGuard)
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FilesInterceptor('file'))
   @Post('upload-picture')
   async uploadPicture(
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFiles() files: Array<Express.Multer.File>,
     @TokenPayloadParam() tokenPayload: TokenPayloadDto,
   ) {
+    const result = [];
+    files.forEach(async file => {
+      const fileExtension = path
+        .extname(file.originalname)
+        .toLowerCase()
+        .substring(1);
+      const fileName = `${randomUUID()}.${fileExtension}`;
+      const fileFullPath = path.resolve(process.cwd(), 'pictures', fileName);
+
+      result.push(fileFullPath);
+
+      await fs.writeFile(fileFullPath, file.buffer);
+    });
+
+    return result;
+    /*
     const fileExtension = path
       .extname(file.originalname)
       .toLowerCase()
@@ -82,6 +100,6 @@ export class PersonsController {
       mimetype: file.mimetype,
       buffer: {},
       size: file.size,
-    };
+    };*/
   }
 }
