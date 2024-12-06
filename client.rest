@@ -108,3 +108,5 @@ Content-Type: image/jpg
 
 < ./dev/images/puppy.jpg
 ------BoundaryDelimitingHttp--
+### See photo
+GET {{baseUrl}}/pictures/27.jpg
