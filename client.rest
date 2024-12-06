@@ -90,3 +90,21 @@ Content-Type: application/json
 {
     "refreshToken": "{{refreshToken}}"
 }
+
+
+
+#
+
+
+# Upload
+### Person photo
+POST {{baseUrl}}/persons/upload-picture
+Authorization: Bearer {{authToken}}
+Content-Type: multipart/form-data; boundary=----BoundaryDelimitingHttp
+
+------BoundaryDelimitingHttp
+Content-Disposition: form-data; name="file"; filename="puppy.jpg"
+Content-Type: image/jpg
+
+< ./dev/images/puppy.jpg
+------BoundaryDelimitingHttp--
