@@ -103,10 +103,10 @@ Authorization: Bearer {{authToken}}
 Content-Type: multipart/form-data; boundary=----BoundaryDelimitingHttp
 
 ------BoundaryDelimitingHttp
-Content-Disposition: form-data; name="file"; filename="puppy.jpg"
-Content-Type: image/jpg
+Content-Disposition: form-data; name="file"; filename="nestjslogo.png"
+Content-Type: image/png
 
-< ./dev/images/puppy.jpg
+< ./dev/images/nestjslogo.png
 ------BoundaryDelimitingHttp--
 ### See photo
 GET {{baseUrl}}/pictures/27.jpg
