@@ -9,6 +9,9 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
+  ParseFilePipeBuilder,
+  HttpStatus,
+  BadRequestException,
 } from '@nestjs/common';
 import { PersonsService } from './persons.service';
 import { CreatePersonDto } from './dto/create-person.dto';
@@ -64,9 +67,25 @@ export class PersonsController {
   @UseInterceptors(FileInterceptor('file'))
   @Post('upload-picture')
   async uploadPicture(
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: /jpeg|jpg|png/g,
+        })
+        .addMaxSizeValidator({
+          maxSize: 10 * (1024 * 1024),
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    file: Express.Multer.File,
     @TokenPayloadParam() tokenPayload: TokenPayloadDto,
   ) {
+    if (file.size < 1024) {
+      throw new BadRequestException('Very small file');
+    }
+
     const fileExtension = path
       .extname(file.originalname)
       .toLowerCase()
