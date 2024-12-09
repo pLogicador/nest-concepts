@@ -35,4 +35,15 @@ describe('PersonsService', () => {
   it('personService should be defined', () => {
     expect(personService).toBeDefined();
   });
+
+  describe('create', () => {
+    it('should create a new person', () => {
+      // createPersonDto
+      // Hashing service needs to have the hash method
+      // Know if the hashing service was called with createPersonDto
+      // Know if the personRepository.create was called with personData
+      // Know if personRepository.save was called with the created person
+      // The final return must be the new person created -> expect
+    });
+  });
 });
