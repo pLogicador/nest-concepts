@@ -90,5 +90,15 @@ describe('PersonsService', () => {
         ConflictException,
       );
     });
+
+    it('should to throw ConflictException when email already exists', async () => {
+      jest
+        .spyOn(personRepository, 'save')
+        .mockRejectedValue(new Error('Generic error'));
+
+      await expect(personService.create({} as any)).rejects.toThrow(
+        new Error('Generic error'),
+      );
+    });
   });
 });
