@@ -5,7 +5,11 @@ import { HashingService } from 'src/auth/hashing/hashing.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreatePersonDto } from './dto/create-person.dto';
-import { ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  NotFoundException,
+} from '@nestjs/common';
 
 describe('PersonsService', () => {
   let personsService: PersonsService;
@@ -190,6 +194,39 @@ describe('PersonsService', () => {
       });
       expect(personRepository.save).toHaveBeenCalledWith(updatedPerson);
       expect(result).toEqual(updatedPerson);
+    });
+
+    it('should to throw NotFoundException if the person does not exist', async () => {
+      // Arrange
+      const personId = 1;
+      const updatePersonDto = { name: 'Kate Perry' };
+      const tokenPayload = { sub: personId } as any;
+
+      // Simulates that preload returned null
+      jest.spyOn(personRepository, 'preload').mockResolvedValue(null);
+
+      // Act and Assert
+      await expect(
+        personsService.update(personId, updatePersonDto, tokenPayload),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('should to throw ForbiddenException if unauthorized user', async () => {
+      // Arrange
+      const personId = 1; // Right user
+      const tokenPayload = { sub: 2 } as any; // Wrong user
+      const updatePersonDto = { name: 'Maria Five' } as any;
+      const existingPerson = { id: personId, name: 'Marron Five' };
+
+      // Simulates that the person exists
+      jest
+        .spyOn(personRepository, 'preload')
+        .mockResolvedValue(existingPerson as any);
+
+      // Act and Assert
+      await expect(
+        personsService.update(personId, updatePersonDto, tokenPayload),
+      ).rejects.toThrow(ForbiddenException);
     });
   });
 });
