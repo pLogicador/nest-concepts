@@ -8,7 +8,7 @@ import { CreatePersonDto } from './dto/create-person.dto';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 
 describe('PersonsService', () => {
-  let personService: PersonsService;
+  let personsService: PersonsService;
   let personRepository: Repository<Person>;
   let hashingService: HashingService;
 
@@ -22,6 +22,7 @@ describe('PersonsService', () => {
             save: jest.fn(),
             create: jest.fn(),
             findOneBy: jest.fn(),
+            find: jest.fn(),
           },
         },
         {
@@ -33,7 +34,7 @@ describe('PersonsService', () => {
       ],
     }).compile();
 
-    personService = module.get<PersonsService>(PersonsService);
+    personsService = module.get<PersonsService>(PersonsService);
     personRepository = module.get<Repository<Person>>(
       getRepositoryToken(Person),
     );
@@ -41,7 +42,7 @@ describe('PersonsService', () => {
   });
 
   it('personService should be defined', () => {
-    expect(personService).toBeDefined();
+    expect(personsService).toBeDefined();
   });
 
   describe('create', () => {
@@ -67,7 +68,7 @@ describe('PersonsService', () => {
       jest.spyOn(personRepository, 'create').mockReturnValue(newPerson as any);
 
       // Act
-      const result = await personService.create(createPersonDto);
+      const result = await personsService.create(createPersonDto);
 
       // Assert
       expect(hashingService.hash).toHaveBeenCalledWith(
@@ -87,17 +88,17 @@ describe('PersonsService', () => {
         code: '23505',
       });
 
-      await expect(personService.create({} as any)).rejects.toThrow(
+      await expect(personsService.create({} as any)).rejects.toThrow(
         ConflictException,
       );
     });
 
-    it('should to throw ConflictException when email already exists', async () => {
+    it('should to throw a generic error when an error is sent', async () => {
       jest
         .spyOn(personRepository, 'save')
         .mockRejectedValue(new Error('Generic error'));
 
-      await expect(personService.create({} as any)).rejects.toThrow(
+      await expect(personsService.create({} as any)).rejects.toThrow(
         new Error('Generic error'),
       );
     });
@@ -117,13 +118,39 @@ describe('PersonsService', () => {
         .spyOn(personRepository, 'findOneBy')
         .mockResolvedValue(personFound as any);
 
-      const result = await personService.findOne(personId);
+      const result = await personsService.findOne(personId);
 
       expect(result).toEqual(personFound);
     });
 
     it('should throw a NotFoundException error when the person does not exist', async () => {
-      await expect(personService.findOne(1)).rejects.toThrow(NotFoundException);
+      await expect(personsService.findOne(1)).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+  });
+
+  describe('findAll', () => {
+    it('should return all persons', async () => {
+      const personsMock: Person[] = [
+        {
+          id: 1,
+          name: 'Pedro',
+          email: 'pedro@email.com',
+          passwordHash: '123456',
+        } as Person,
+      ];
+
+      jest.spyOn(personRepository, 'find').mockResolvedValue(personsMock);
+
+      const result = await personsService.findAll();
+
+      expect(result).toEqual(personsMock);
+      expect(personRepository.find).toHaveBeenCalledWith({
+        order: {
+          id: 'desc',
+        },
+      });
     });
   });
 });
