@@ -5,7 +5,7 @@ import { HashingService } from 'src/auth/hashing/hashing.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreatePersonDto } from './dto/create-person.dto';
-import { ConflictException } from '@nestjs/common';
+import { ConflictException, NotFoundException } from '@nestjs/common';
 
 describe('PersonsService', () => {
   let personService: PersonsService;
@@ -21,6 +21,7 @@ describe('PersonsService', () => {
           useValue: {
             save: jest.fn(),
             create: jest.fn(),
+            findOneBy: jest.fn(),
           },
         },
         {
@@ -99,6 +100,30 @@ describe('PersonsService', () => {
       await expect(personService.create({} as any)).rejects.toThrow(
         new Error('Generic error'),
       );
+    });
+  });
+
+  describe('findOne', () => {
+    it('should return a person if the person is found', async () => {
+      const personId = 1;
+      const personFound = {
+        id: personId,
+        name: 'Pedro',
+        email: 'pedro@email.com',
+        passwordHash: '123456',
+      };
+
+      jest
+        .spyOn(personRepository, 'findOneBy')
+        .mockResolvedValue(personFound as any);
+
+      const result = await personService.findOne(personId);
+
+      expect(result).toEqual(personFound);
+    });
+
+    it('should throw a NotFoundException error when the person does not exist', async () => {
+      await expect(personService.findOne(1)).rejects.toThrow(NotFoundException);
     });
   });
 });
