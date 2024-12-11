@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -52,7 +52,28 @@ describe('AppController (e2e)', () => {
     await app.close();
   });
 
-  it('/ (GET)', () => {
-    //
+  describe('/persons (POST)', () => {
+    it('should create a person successfully', async () => {
+      const createPersonDto = {
+        email: 'pedro@email.com',
+        password: '123456',
+        name: 'Pedro',
+      };
+      const response = await request(app.getHttpServer())
+        .post('/persons')
+        .send(createPersonDto)
+        .expect(HttpStatus.CREATED);
+
+      expect(response.body).toEqual({
+        email: createPersonDto.email,
+        passwordHash: expect.any(String),
+        name: createPersonDto.name,
+        active: true,
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        picture: '',
+        id: expect.any(Number),
+      });
+    });
   });
 });
