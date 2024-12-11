@@ -6,10 +6,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreatePersonDto } from './dto/create-person.dto';
 import {
+  BadRequestException,
   ConflictException,
   ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
+import * as path from 'path';
+import * as fs from 'fs/promises';
+
+jest.mock('fs/promises');
 
 describe('PersonsService', () => {
   let personsService: PersonsService;
@@ -284,6 +289,83 @@ describe('PersonsService', () => {
 
       await expect(
         personsService.remove(personId, tokenPayload),
+      ).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('uploadPicture', () => {
+    it('should save the image correctly and update the person', async () => {
+      // Arrange
+      const mockFile = {
+        originalname: 'test.png',
+        size: 2000,
+        buffer: Buffer.from('file content'),
+      } as Express.Multer.File;
+
+      const mockPerson = {
+        id: 1,
+        name: 'Pedro',
+        email: 'pedro@email.com',
+      } as Person;
+
+      const tokenPayload = { sub: 1 } as any;
+
+      jest.spyOn(personsService, 'findOne').mockResolvedValue(mockPerson);
+      jest.spyOn(personRepository, 'save').mockResolvedValue({
+        ...mockPerson,
+        picture: '1.png',
+      });
+
+      const filePath = path.resolve(process.cwd(), 'pictures', '1.png');
+
+      // Act
+      const result = await personsService.uploadPicture(mockFile, tokenPayload);
+
+      // Assert
+      expect(fs.writeFile).toHaveBeenCalledWith(filePath, mockFile.buffer);
+      expect(personRepository.save).toHaveBeenCalledWith({
+        ...mockPerson,
+        picture: '1.png',
+      });
+      expect(result).toEqual({
+        ...mockPerson,
+        picture: '1.png',
+      });
+    });
+
+    it('should to throw BadRequestException if the file is too small', async () => {
+      // Arrange
+      const mockFile = {
+        originalname: 'test.png',
+        size: 500,
+        buffer: Buffer.from('small content'),
+      } as Express.Multer.File;
+
+      const tokenPayload = { sub: 1 } as any;
+
+      // Act and Assert
+      await expect(
+        personsService.uploadPicture(mockFile, tokenPayload),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('should to throw NotFoundException if the person is not found', async () => {
+      // Arrange
+      const mockFile = {
+        originalname: 'test.png',
+        size: 2000,
+        buffer: Buffer.from('file content'),
+      } as Express.Multer.File;
+
+      const tokenPayload = { sub: 1 } as any;
+
+      jest
+        .spyOn(personsService, 'findOne')
+        .mockRejectedValue(new NotFoundException());
+
+      // Act and Assert
+      await expect(
+        personsService.uploadPicture(mockFile, tokenPayload),
       ).rejects.toThrow(NotFoundException);
     });
   });
