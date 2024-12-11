@@ -11,6 +11,7 @@ import { GlobalConfigModule } from 'src/global-config/global-config.module';
 import { AuthModule } from 'src/auth/auth.module';
 import * as path from 'path';
 import appConfig from 'src/app/config/app.config';
+import { CreatePersonDto } from 'src/persons/dto/create-person.dto';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -54,7 +55,7 @@ describe('AppController (e2e)', () => {
 
   describe('/persons (POST)', () => {
     it('should create a person successfully', async () => {
-      const createPersonDto = {
+      const createPersonDto: CreatePersonDto = {
         email: 'pedro@email.com',
         password: '123456',
         name: 'Pedro',
@@ -74,6 +75,48 @@ describe('AppController (e2e)', () => {
         picture: '',
         id: expect.any(Number),
       });
+    });
+
+    it('should generate an email error already exists', async () => {
+      const createPersonDto: CreatePersonDto = {
+        email: 'pedro@email.com',
+        password: '123456',
+        name: 'Pedro',
+      };
+
+      await request(app.getHttpServer())
+        .post('/persons')
+        .send(createPersonDto)
+        .expect(HttpStatus.CREATED);
+
+      const response = await request(app.getHttpServer())
+        .post('/persons')
+        .send(createPersonDto)
+        .expect(HttpStatus.CONFLICT);
+
+      //console.log(response.body.message);
+      expect(response.body.message).toBe('Email already registered.');
+    });
+
+    it('should generate a short password error', async () => {
+      const createPersonDto: CreatePersonDto = {
+        email: 'pedro@email.com',
+        password: '123',
+        name: 'Pedro',
+      };
+
+      const response = await request(app.getHttpServer())
+        .post('/persons')
+        .send(createPersonDto)
+        .expect(HttpStatus.BAD_REQUEST);
+
+      //console.log(response.body.message);
+      expect(response.body.message).toEqual([
+        'password must be longer than or equal to 5 characters',
+      ]);
+      expect(response.body.message).toContain(
+        'password must be longer than or equal to 5 characters',
+      );
     });
   });
 });
