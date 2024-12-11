@@ -28,6 +28,7 @@ describe('PersonsService', () => {
             findOneBy: jest.fn(),
             find: jest.fn(),
             preload: jest.fn(),
+            remove: jest.fn(),
           },
         },
         {
@@ -227,6 +228,63 @@ describe('PersonsService', () => {
       await expect(
         personsService.update(personId, updatePersonDto, tokenPayload),
       ).rejects.toThrow(ForbiddenException);
+    });
+  });
+
+  describe('remove', () => {
+    it('should remove a person if authorized', async () => {
+      // Arrange
+      const personId = 1;
+      const tokenPayload = { sub: personId } as any;
+      const existingPerson = { id: personId, name: 'John Doe' };
+
+      // findOne of service will return the existing person
+      jest
+        .spyOn(personsService, 'findOne')
+        .mockResolvedValue(existingPerson as any);
+      // remove of Repository will return the existing person
+      jest
+        .spyOn(personRepository, 'remove')
+        .mockResolvedValue(existingPerson as any);
+
+      // Act
+      const result = await personsService.remove(personId, tokenPayload);
+
+      // Assert
+      expect(personsService.findOne).toHaveBeenCalledWith(personId);
+      expect(personRepository.remove).toHaveBeenCalledWith(existingPerson);
+      expect(result).toEqual(existingPerson);
+    });
+
+    it('should to throw ForbiddenException if unauthorized', async () => {
+      // Arrange
+      const personId = 1;
+      const tokenPayload = { sub: 2 } as any;
+      const existingPerson = { id: personId, name: 'John Doe' };
+
+      // I hope findOne will be called with an existing person
+      jest
+        .spyOn(personsService, 'findOne')
+        .mockResolvedValue(existingPerson as any);
+
+      // I hope the service rejects because the user is different from the person
+      await expect(
+        personsService.remove(personId, tokenPayload),
+      ).rejects.toThrow(ForbiddenException);
+    });
+
+    it('should to throw NotFoundException if the person is not found', async () => {
+      const personId = 1;
+      const tokenPayload = { sub: personId } as any;
+
+      // We just need findOne to throw an exception and removes it should also to throw
+      jest
+        .spyOn(personsService, 'findOne')
+        .mockRejectedValue(new NotFoundException());
+
+      await expect(
+        personsService.remove(personId, tokenPayload),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 });
