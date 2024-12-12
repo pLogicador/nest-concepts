@@ -13,8 +13,35 @@ import * as path from 'path';
 import appConfig from 'src/app/config/app.config';
 import { CreatePersonDto } from 'src/persons/dto/create-person.dto';
 
+const login = async (
+  app: INestApplication,
+  email: string,
+  password: string,
+) => {
+  const response = await request(app.getHttpServer())
+    .post('/auth')
+    .send({ email, password });
+
+  return response.body.accessToken;
+};
+
+const createUserAndLogin = async (app: INestApplication) => {
+  const name = 'Any User';
+  const email = 'anyuser@email.com';
+  const password = '123456';
+
+  await request(app.getHttpServer()).post('/persons').send({
+    name,
+    email,
+    password,
+  });
+
+  return login(app, email, password);
+};
+
 describe('AppController (e2e)', () => {
   let app: INestApplication;
+  let authToken: string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -47,6 +74,8 @@ describe('AppController (e2e)', () => {
     appConfig(app);
 
     await app.init();
+
+    authToken = await createUserAndLogin(app);
   });
 
   afterEach(async () => {
@@ -117,6 +146,60 @@ describe('AppController (e2e)', () => {
       expect(response.body.message).toContain(
         'password must be longer than or equal to 5 characters',
       );
+    });
+  });
+
+  describe('/persons/:id (GET)', () => {
+    it('should return Unauthorized when user is not logged in', async () => {
+      const personResponse = await request(app.getHttpServer())
+        .post('/persons')
+        .send({
+          email: 'pedro@email.com',
+          password: '123456',
+          name: 'Pedro',
+        })
+        .expect(HttpStatus.CREATED);
+
+      const response = await request(app.getHttpServer())
+        .get('/persons/' + personResponse.body.id)
+        .expect(HttpStatus.UNAUTHORIZED);
+
+      expect(response.body).toEqual({
+        message: 'It was not logged in!',
+        error: 'Unauthorized',
+        statusCode: 401,
+      });
+    });
+
+    it('should return the person when user is logged in', async () => {
+      const createPersonDto: CreatePersonDto = {
+        email: 'pedro@email.com',
+        password: '123456',
+        name: 'Pedro',
+      };
+
+      const personResponse = await request(app.getHttpServer())
+        .post('/persons')
+        .send({ ...createPersonDto })
+        .expect(HttpStatus.CREATED);
+
+      //const accessToken = await createUserAndLogin(app);
+
+      const response = await request(app.getHttpServer())
+        .get('/persons/' + personResponse.body.id)
+        .set('Authorization', `Bearer ${authToken}`)
+        .expect(HttpStatus.OK);
+
+      expect(response.body).toEqual({
+        email: createPersonDto.email,
+        passwordHash: expect.any(String),
+        name: createPersonDto.name,
+        active: true,
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        picture: '',
+        id: expect.any(Number),
+      });
     });
   });
 });
